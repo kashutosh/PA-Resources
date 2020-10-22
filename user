@@ -1,0 +1,35 @@
+{
+   "userid" : "string",
+   "username" : "string",
+   "useraddress" : "string",
+   "password" : blob,
+   "created_date" : "string",
+   "established_date" : "string",
+   "first_post_date" : "string",
+   "activity_indicator" : float,
+   "phone_number" : "string",
+   "email" : "string",
+   "number_of_clients" : integer,
+   "total_sales" : integer,
+   "home_latitude" : decimal,
+   "home_longitude" : decimal",
+   "foreign_latitude" : decimal,
+   "foreign_longitude" : decimal",
+   "moving_latitude" : decimal,
+   "moving_longitude" : decimal",
+   "services" : json,
+   "rating" : float,
+
+   "verified" : boolean,
+   "profile" : "string",
+   "testimonial" : "string",
+   "catalog" : "string",
+   "gallary" : "string",
+
+   "photo" : "string",
+   "about" : "string",
+   "views" : integer,
+   "misbehavior_count" : integer,
+   "home_location" : "string",  -- NEW 
+   "followers" : json
+}

@@ -1,0 +1,13 @@
+{
+   "userid" : "string",
+   "activity_indicator" : float,
+   "home_latitude" : decimal,
+   "home_longitude" : decimal",
+   "foreign_latitude" : decimal,
+   "foreign_longitude" : decimal",
+   "moving_latitude" : decimal,
+   "moving_longitude" : decimal",
+   "categories_interested" : list,
+   "follows" : list,
+   "created_date" : "string"
+}

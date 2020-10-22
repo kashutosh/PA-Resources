@@ -1,0 +1,193 @@
+GET APIs
+-------------------------------------------------------------------------------------
+Get a single user: https://api.pa.com/v1/user/:id
+    // json info of a user
+    // Return the profile of the user
+Get a single user: https://api.pa.com/v1/user/:username
+    // OPTIONAL substitute for id. Use a name
+
+Get a bunch of user: https://api.pa.com/v1/user?ids=
+    // Parameter: ids: Upto 10 comma separated id values which may be valid or invalid
+    // ids=1,2,3,4,5,6,7,8,9,10
+    // Return preview profiles of user
+    // limit the number of bytes
+
+
+Get my current named location: https://api.pa.com/v1/location
+    // PARAMS: latitude and longitude
+?lat=10.21231&long=11.12313
+
+    // Return the representation for a location
+{
+    "location_short_name" : "string",
+    "location_full_name"  : "string",
+    "location_id"         : "string",
+    "parent_loc"          : "string"
+    links = {
+    }
+} 
+
+
+Get channels in a named location: https://api.pa.com/v1/:location
+{
+    [
+        "channel_id" : "string",
+        "channel_short_name" : "string",
+        "channel_url" : "string"
+    ],
+    [
+        "channel_id" : "string",
+        "channel_short_name" : "string",
+        "channel_url" : "string"
+    ]
+
+}
+
+
+OPTIONAL: Get posts a single channel: https://api.pa.com/v1/channels/:channel_id
+Paginated, Sorted
+{
+
+}
+
+Get posts on a single channel: https://api.pa.com/v1/channels/:channel_name
+?from=<number>&to=<number>&sort=time|distance
+    // paginated list of posts ordered by time
+{
+    [
+        "post_id" : "string",
+        "type" : "preview",
+        "post_ts" : "string",
+        "title" : string",
+        "preview_image" : "string",
+        "posted_by" : "string",
+        "views" : integer,
+        "interested" : integer
+        "link" : "string",
+        "valid_till_ts" : "string",
+    ],
+    [
+    ]
+}
+
+
+Get metadata of a channel : https://api.pa.com/v1/channel/:channel_id/metadata
+{
+    [
+        "channel_id" : "string",
+        "channel_short_name" : "string",
+        "channel_url" : "string",
+        "location_polygon" : [],
+        "title" : "string",
+        "description" : "string" 
+    ]
+}
+
+Get a single post: https://api.pa.com/v1/posts/:id
+{
+        "post_id" : "string",
+        "type" : "preview",
+        "post_ts" : "string",
+        "title" : string",
+        "preview_image" : "string",
+        "posted_by" : "string",
+        "views" : integer,
+        "interested" : integer
+        "link" : "string",
+        "valid_till_ts" : "string"
+}
+
+Get multiple posts: https://api.pa.com/v1/posts?ids=
+    // Parameters: ids: Upto 10 comma separated id values, which may be valid or invalid. 
+Same as above
+
+Get details of a post: https://api.pa.com/v1/posts/:id/full
+
+{
+        "post_id" : "string",
+        "type" : "full",
+        "post_ts" : "string",
+        "title" : string",
+        "image" : "string",
+        "posted_by" : "string",
+        "poster_location_lat" : decimal,
+        "poster_location_long" : decimal,
+        "poster_rating" : integer,
+        "views" : integer,
+        "interested" : integer
+        "valid_till_ts" : "string",
+        "links" : [
+             "poster_home" : "string",
+             "image" : "string",
+             "rate_link" : "string"
+        ]
+}
+
+
+Get gallary of a user: https://api.pa.com/v1/user/:id/gallary
+{
+    "userid" : "string",
+    "username" : "string",
+    "user_full_name" : "string",
+    "gallary_images" : [ "string" ],
+    "rate_link" : "string"
+}
+
+Get showcase of a user: https://api.pa.com/v1/user/:id/showcase
+Get testimonial of a user: https://api.pa.com/v1/user/:id/testimonial
+Get followers of a user: https://api.pa.com/v1/user/:id/followers
+
+
+Get followers of a channel: https://api.pa.com/v1/channels/:id/followers
+    // Is this even required?
+
+
+Search API Endpoints
+
+Design for preview and full post: Basically, just add a endpoint for full details
+
+
+POST APIs
+
+https://api.pa.com/v1/user
+Body: JSON
+Respond with ID
+Link to content
+
+
+
+https://api.pa.com/v1/post
+Body: JSON containing channelname
+Respond with ID
+Link to content
+
+POST : Creating dataset for user
+
+https://api.pa.com/v1/user/:id/gallary
+https://api.pa.com/v1/user/:id/showcase
+https://api.pa.com/v1/user/:id/testimonial
+https://api.pa.com/v1/user/:id/profile
+
+
+
+-----------------------------------------------------------
+Only GET methods take parameters through URL. They can be accessed with
+
+localhost:3000/users?code=code123&key=key123&id=id123
+  const queryObject = url.parse(req.url,true).query;
+  console.log(queryObject);
+  console.log(queryObject['code']); 
+  console.log(queryObject['key']);
+  console.log(queryObject['id']);
+
+Variable parameter is accessed like
+router.get('/:id', function(req, res, next) {
+  res.send('respond with a resource' + req.params.id);
+
+
+
+  
+POST method parameters are sent through body. URL Parameters can also be given in POST method
+
+Access it with   console.log(req.body.name);
+

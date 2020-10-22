@@ -1,0 +1,21 @@
+{
+    "channel_id" : "string"
+    "channel_short_name" : "string",
+    "channel_url" : "string",
+    "location_polygon" : [],
+    "title" : "string",
+    "description" : "string",
+    "channel_preview_logo" : "string",
+    "channel_full_name" : "string",
+    "channel_logo" : "string",
+    "created_date" : "string",
+    "moderator" : "string",
+    "type " : "string",             
+    "expiry_enabled" : boolean,
+    "save_enabled" : boolean,
+    "search_enabled" : boolean,
+    "anybody_can_post" : boolean,
+    "post_by_approval" : boolean,
+    "parent" : "string",
+    "posts" : [ "string" ]
+}

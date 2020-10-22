@@ -1,0 +1,70 @@
+Understand the versioning in REST API
+Resources are Nouns in your system
+
+steps:
+1. Identify your resources
+2. Decide on which port and what types of requests
+3. Decide on Headers
+4. Decide on verbs
+5. Decide on parameters of each type of request
+6. Decide on hypermedia
+7. Decide on pagination
+
+DONE!
+
+v1
+
+Lesson 1 : Use a HTTP header to explicitly request which version of API do you want
+Accept: application/vnd.pa.v1+json
+
+Lesson 2: All requests must be HTTPS requests. 
+    How to achieve? Force the webserver to run only on 443. Disable HTTP 80 port
+
+Lesson 3: All responses are JSON only
+    This is easy to achieve. Basically, from nodejs server, respond only with json. Let the client decide how to render it using client side JS or anything else.
+
+Lesson 4: All requests must be JSON?
+github uses ngnix
+
+Lesson 5: All timestamps are ISO 8601
+YYYY-MM-DDTHH:MM:SSZ (T and Z are fixed letters). e.g. 2020-11-30T10:30:45Z => 30 Nov, 2020. 10 Hrs, 30 Mins, 45 Seconds
+
+Lesson 6: For I8N, timezones must be specified. A webserver activity basically. Convert all times to UTC.
+HTTP has a Time-Zone header
+
+Lesson 7: HTTP Verbs
+GET: Retrieve resource
+POST: Create new resource
+PUT: Replace a resource
+PATCH: Update a resource. When JSON data is partial
+
+
+Lesson 8: Hypermedia
+
+
+Lesson 9: Pagination
+
+Lesson 10: Parameters
+
+My Resources: Technique: Look at some other resources on web ;-)
+ping -- Done
+user
+reader / anon_user
+	reader is a anonymous user who just reads. Does not have to be stored on the server?
+event
+channel
+location
+	location is a named location. Not a lat,long pair
+followers
+gallary
+showcase
+testimonial
+catalog
+search
+	Search is not a resource. Just a API endpoint
+	Channels -- by location, topic, etc
+	Posts    -- by search key, location, etc
+	
+
+
+Task 1: Design a hello, pa! API
