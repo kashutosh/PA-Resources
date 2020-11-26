@@ -1,0 +1,21 @@
+{
+   "event_id" : "string", -- Auto Generated
+   "userid" : "string",   -- Of the Poster, Derived from login info
+   "username" : "string", -- Of the user, Derived from the database
+   "event_time_timestamp" : "string", -- No
+   "eventname" : "string", -- Some kind of title
+   "latitude" : decimal,   -- location of post
+   "longitude" : decimal,  -- location of post
+   "location_name" : "string", -- Derived from database
+   "expiry" : integer,     -- user must necessarily set this, else it is 1 day or 2 days
+   "description" : "string", -- text description
+   "categories" : json,     -- No
+   "tags" : json,           -- No
+   "seen_counter" : integer, -- How many people saw it
+   "interested_people" : integer, -- No
+   "posted_ts" : "string",  -- timestamp when posted
+   "channel" : string,      -- channel on which posted
+   "image" : "string",      -- one image allowed
+   "preview_image" : "string", -- derived by stream processor
+   "priority" : "string"      -- user should state it explicitly
+}

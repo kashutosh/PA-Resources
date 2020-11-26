@@ -1,0 +1,22 @@
+{
+   "event_id" : "string",
+   "userid" : "string",
+   "username" : "string",
+   "event_time_timestamp" : "string", -- No
+   "eventname" : "string", -- No
+   "latitude" : decimal, 
+   "longitude" : decimal,
+   "location_name" : "string",
+   "price" : double, -- No
+   "expiry" : integer, -- No
+   "description" : "string",
+   "categories" : json,
+   "tags" : json,
+   "seen_counter" : integer,
+   "interested_people" : integer,
+   "posted_ts" : "string",
+   "channel" : string, 
+   "images" : [ "string"], -- No
+   "preview_image" : "string", -- No
+   "link" : "string" -- New
+}
