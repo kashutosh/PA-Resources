@@ -1,0 +1,158 @@
+Recieved By Web Server
+
+E1	userid
+E2	brief
+E3	Latitude
+E4	Longitude
+E5	Expiry
+E6	posted_ts
+E7	Channel
+E8	Priority
+E9	message
+E10	target_location
+
+{
+"type":"record",
+"name":"Value",
+"namespace":"my.pa.spread_the_word_postevent",
+"fields":[
+	{"name":"userid", "type":"string"},
+	{"name":"brief", "type":"string"},
+	{"name":"latitude", "type":"string"},
+	{"name":"longitude", "type":"string"},
+	{"name":"expiry", "type":"string"},
+	{"name":"posted_ts", "type":"string"},
+	{"name":"channel", "type":"string"},
+	{"name":"priority", "type":"string"},
+	{"name":"message", "type":"string"},
+	{"name":"target_location", "type":"string"}
+	]
+}
+
+
+
+Added By Web Server
+I2	Image
+I3	preview_image
+I4	Attachment
+W1	Eventid
+W2	Type
+
+
+{
+"type":"record",
+"name":"Value",
+"namespace":"my.pa.spread_the_word_received",
+"fields":[
+	{"name":"userid", "type":"string"},
+	{"name":"brief", "type":"string"},
+	{"name":"latitude", "type":"string"},
+	{"name":"longitude", "type":"string"},
+	{"name":"expiry", "type":"string"},
+	{"name":"posted_ts", "type":"string"},
+	{"name":"channel", "type":"string"},
+	{"name":"priority", "type":"string"},
+	{"name":"message", "type":"string"},
+	{"name":"target_location", "type":"string"},
+	{"name":"image", "type":"string"},
+	{"name":"preview_image", "type":"string"},
+	{"name":"attachment", "type":"string"},
+	{"name":"eventid", "type":"string"},
+	{"name":"type", "type":"string"}
+	]
+}
+
+
+
+Added By Router
+O2	geo_partition
+O3	error_topic
+
+{
+"type":"record",
+"name":"Value",
+"namespace":"my.pa.spread_the_word_routed",
+"fields":[
+	{"name":"userid", "type":"string"},
+	{"name":"brief", "type":"string"},
+	{"name":"latitude", "type":"string"},
+	{"name":"longitude", "type":"string"},
+	{"name":"expiry", "type":"string"},
+	{"name":"posted_ts", "type":"string"},
+	{"name":"channel", "type":"string"},
+	{"name":"priority", "type":"string"},
+	{"name":"message", "type":"string"},
+	{"name":"target_location", "type":"string"},
+	{"name":"image", "type":"string"},
+	{"name":"preview_image", "type":"string"},
+	{"name":"attachment", "type":"string"},
+	{"name":"eventid", "type":"string"},
+	{"name":"type", "type":"string"},
+	{"name":"geo_partition", "type":"string"},
+	{"name":"error_topic", "type":"string"}
+	]
+}
+
+
+Added by Checker
+{
+"type":"record",
+"name":"Value",
+"namespace":"my.pa.spread_the_word_checked",
+"fields":[
+	{"name":"userid", "type":"string"},
+	{"name":"brief", "type":"string"},
+	{"name":"latitude", "type":"string"},
+	{"name":"longitude", "type":"string"},
+	{"name":"expiry", "type":"string"},
+	{"name":"posted_ts", "type":"string"},
+	{"name":"channel", "type":"string"},
+	{"name":"priority", "type":"string"},
+	{"name":"message", "type":"string"},
+	{"name":"target_location", "type":"string"},
+	{"name":"image", "type":"string"},
+	{"name":"preview_image", "type":"string"},
+	{"name":"attachment", "type":"string"},
+	{"name":"eventid", "type":"string"},
+	{"name":"type", "type":"string"},
+	{"name":"geo_partition", "type":"string"},
+	{"name":"error_topic", "type":"string"}
+	]
+}
+
+
+
+
+
+
+Added by Location Enhancer
+I1	src_location_name
+
+
+{
+"type":"record",
+"name":"Value",
+"namespace":"my.pa.spread_the_word_enhanced",
+"fields":[
+	{"name":"userid", "type":"string"},
+	{"name":"brief", "type":"string"},
+	{"name":"latitude", "type":"string"},
+	{"name":"longitude", "type":"string"},
+	{"name":"expiry", "type":"string"},
+	{"name":"posted_ts", "type":"string"},
+	{"name":"channel", "type":"string"},
+	{"name":"priority", "type":"string"},
+	{"name":"message", "type":"string"},
+	{"name":"target_location", "type":"string"},
+	{"name":"image", "type":"string"},
+	{"name":"preview_image", "type":"string"},
+	{"name":"attachment", "type":"string"},
+	{"name":"eventid", "type":"string"},
+	{"name":"type", "type":"string"},
+	{"name":"geo_partition", "type":"string"},
+	{"name":"error_topic", "type":"string"},
+	{"name":"src_location_name", "type":"string"}
+	]
+}
+
+
