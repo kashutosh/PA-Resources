@@ -8,7 +8,7 @@
    "longitude" : decimal,
    "location_name" : "string",
    "price" : double,       --No
-   "expiry" : integer,
+   "expiry_hours" : integer,
    "description" : "string",
    "categories" : json,
    "tags" : json,

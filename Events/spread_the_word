@@ -1,21 +1,37 @@
 {
-   "event_id" : "string", -- Auto Generated
-   "userid" : "string",   -- Of the Poster, Derived from login info
-   "username" : "string", -- Of the user, Derived from the database
-   "event_time_timestamp" : "string", -- No
-   "eventname" : "string", -- Some kind of title
+   "eventid" : "string", -- Auto Generated ULID
+   "userid" : "string",   -- Of the Poster, Derived from login info or mobile number
+   "brief" : "string", -- Some kind of title
    "latitude" : decimal,   -- location of post
    "longitude" : decimal,  -- location of post
-   "location_name" : "string", -- Derived from database
+   "src_location_name" : "string", -- Derived from database (From where is the event generated)
    "expiry" : integer,     -- user must necessarily set this, else it is 1 day or 2 days
-   "description" : "string", -- text description
-   "categories" : json,     -- No
-   "tags" : json,           -- No
    "seen_counter" : integer, -- How many people saw it
-   "interested_people" : integer, -- No
    "posted_ts" : "string",  -- timestamp when posted
    "channel" : string,      -- channel on which posted
-   "image" : "string",      -- one image allowed
+   "image" : "string",      -- one image file name
    "preview_image" : "string", -- derived by stream processor
    "priority" : "string"      -- user should state it explicitly
+   "username" : "string", -- No. of the user. Derived from users table.
+   "message" : "string", -- text message
+   "event_time" : "string", -- No
+   "categories" : json,     -- No
+   "tags" : json,           -- No
+   "interested_people" : integer, -- No
+   "attachment" : "string",  -- filename of attachment
+   "target_location" : "string", -- foreign key to target location name
+   "message" : "string"
 }
+
+// mandatory parameters for POST request
+// These parameters must match the UI in Vue
+userid
+brief
+latitude
+longitude
+expiry
+posted_ts
+channel
+image
+priority
+message
