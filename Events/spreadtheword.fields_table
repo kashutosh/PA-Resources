@@ -32,11 +32,11 @@ E10	target_location
 
 
 Added By Web Server
-I2	Image
+I2	image
 I3	preview_image
-I4	Attachment
-W1	Eventid
-W2	Type
+I4	attachment
+W1	eventid
+W2	type
 
 
 {
