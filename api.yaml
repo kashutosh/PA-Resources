@@ -1,26 +1,26 @@
 openapi: 3.0.1
 info:
   title: PA
-  description: 'This is PA server API. Know more at https://localhost.io:9090'
-  termsOfService: https://localhost.io:9090/termsofservice
+  description: 'This is PA server API. Know more at https://panther.dev.io'
+  termsOfService: https://panther.dev.io/termsofservice
   contact:
     email: ashutosh.n.kulkarni@gmail.com
   license:
     name: Propriatory Information
-    url: https://localhost.io:9090/license
+    url: https://panther.dev.io/license
   version: 1.0.0
 
 servers:
-- url: https://localhost:9090.io/v1
+- url: https://panther.dev.io/v1
   description: Production server
-- url: https://staging-localhost:9090.io/v1
+- url: https://staging-panther.dev.io/v1
   description: Staging server
 tags:
 - name: reader
   description: Everything about read only user
   externalDocs:
     description: Find out more
-    url: https://localhost:9090.io
+    url: https://panther.dev.io
 - name: event
   description: Everything about event
 - name: user
@@ -349,6 +349,95 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchErrorResponse'
+
+    put:
+      tags:
+      - channel
+      parameters:
+      - name: id
+        in: path
+        description: The channel name
+        required: true
+        schema:
+          type: string
+
+      summary: Update a channel
+      operationId: updateChannel
+      requestBody:
+        description: Channel object describing the channel to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+        required: true
+      responses:
+        200:
+          description: Channel successfully updated
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+        405:
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+        400:
+          description: The server could not interpret the data provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+        404:
+          description: The server could not find the data requested
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+      security:
+      - pa_auth:
+        - write:events
+        - read:events
+      x-codegen-request-body-name: body
+
+
+  /channel/{id}/metadata:
+    get:
+      tags:
+      - channel
+      summary: Get metadata of a channel
+      operationId: getMetadataOfChannel
+      parameters:
+      - name: id
+        in: path
+        description: The channel name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Reading metadata of a channel Successful
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Channel'
+
+        400:
+          description: The server could not interpret the channelid provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+
+        405:
+          description: Validation exception on channelid provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCUDResponse'
+
+
   /channel:
     post:
       tags:
@@ -1120,7 +1209,7 @@ components:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: https://localhost:9090.io/oauth/dialog
+          authorizationUrl: https://panther.dev.io/oauth/dialog
           scopes:
             write:events: modify events in your account
             read:events: read your events
