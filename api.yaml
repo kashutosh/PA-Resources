@@ -702,9 +702,13 @@ components:
         code:
           type: integer
           format: int32
-        type:
+        eventid:
           type: string
         message:
+          type: string
+        error:
+          type: string
+        redirect:
           type: string
   securitySchemes:
     petstore_auth:
