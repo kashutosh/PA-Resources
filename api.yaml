@@ -28,9 +28,50 @@ tags:
   description: Everything about channel
 - name: dashboard
   description: Dashboard Management
+- name: search
+  description: Search Engine
 
   
 paths:
+  /search:
+    get:
+      tags:
+      - search
+      summary: Search API
+      operationId: search
+
+      parameters:
+      - name: key
+        in: query
+        description: The search key
+        required: true
+        schema:
+          type: string
+      - name: order
+        in: query
+        description: The ordering required for search results
+        required: false
+        schema:
+          type: string
+          items:
+            type: string
+            default: relevance
+            enum:
+            - date
+            - distance
+            - relevance
+
+      responses:
+        200:
+          description: Search Successful
+          content: {}
+        400:
+          description: The server could not interpret the search description provided.
+          content: {}
+        405:
+          description: Validation exception on the search parameters provided
+          content: {}
+
   /location:
     put:
       tags:
@@ -118,11 +159,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Location'
             application/json:
               schema:
                 type: array
@@ -165,11 +201,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Location'
             application/json:
               schema:
                 type: array
@@ -208,9 +239,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Location'
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
@@ -367,9 +395,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Event'
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
@@ -399,9 +424,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Event'
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
@@ -585,9 +607,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
@@ -691,8 +710,6 @@ components:
         complete:
           type: boolean
           default: false
-      xml:
-        name: Event
     Channel:
       type: object
       properties:
@@ -707,8 +724,6 @@ components:
         longitude:
           type: number
           format: number
-      xml:
-        name: Channel
     User:
       type: object
       properties:
@@ -737,8 +752,6 @@ components:
           type: integer
           description: User Status
           format: int32
-      xml:
-        name: User
     Reader:
       type: object
       properties:
@@ -747,50 +760,35 @@ components:
           format: int64
         name:
           type: string
-      xml:
-        name: Reader
     Location:
       required:
-      - name
-      - photoUrls
+      - id
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-        category:
-          $ref: '#/components/schemas/Channel'
-        name:
           type: string
-          example: enthusiasts
-        photoUrls:
+          format: string
+          example: pune
+        shortname:
+          type: string
+          format: string
+          example: pune
+        fullname:
+          type: string
+          format: string
+          example: in.pune
+        polygon:
           type: array
-          xml:
-            name: photoUrl
-            wrapped: true
           items:
             type: string
-        tags:
-          type: array
-          xml:
-            name: tag
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Reader'
-        status:
+        parent:
           type: string
-          description: location status in the store
-          enum:
-          - available
-          - pending
-          - sold
-      xml:
-        name: Location
+          format: string
+          example: in
     
     WebEntry:
       required:
       - name
-      - photoUrls
       type: object
       properties:
         id:
@@ -801,13 +799,6 @@ components:
         name:
           type: string
           example: enthusiasts
-        photoUrls:
-          type: array
-          xml:
-            name: photoUrl
-            wrapped: true
-          items:
-            type: string
         tags:
           type: array
           xml:
@@ -839,6 +830,14 @@ components:
           type: string
         redirect:
           type: string
+
+    SearchObject:
+      type: object
+      properties:
+        key:
+          type: string
+          format: string
+
   securitySchemes:
     pa_auth:
       type: oauth2
