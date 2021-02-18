@@ -313,6 +313,63 @@ paths:
         - write:events
         - read:events
 
+  /channels:
+    get:
+      tags:
+      - channels
+      summary: Get list of channels that user can listen to
+      operationId: getChannelsBasedOnLocation
+      parameters:
+      - name: lastread
+        in: query
+        description: Fetch more channels based on lastread channel name
+        required: false
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: How many channels to fetch
+        required: false
+        schema:
+          type: integer
+        default: 7
+      - name: latitude
+        in: query
+        description: Latitude from where user is caling this API
+        required: true
+        schema:
+          type: number
+      - name: longitude
+        in: query
+        description: Longitude from where user is caling this API
+        required: true
+        schema:
+          type: number
+      responses:
+        200:
+          description: Reading events on a channel Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventPreview'
+
+        400:
+          description: The server could not interpret the search description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
+
+        405:
+          description: Validation exception on the search parameters provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
+
+
   /channel/{id}:
     get:
       tags:
@@ -326,6 +383,30 @@ paths:
         required: true
         schema:
           type: string
+      - name: lastread
+        in: query
+        description: Fetch events backwards starting from lastread where lastread stands for oldest eventid
+        required: false
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: How many events to fetch
+        required: false
+        schema:
+          type: integer
+      - name: latitude
+        in: query
+        description: Latitude from where user is caling this API
+        required: true
+        schema:
+          type: number
+      - name: longitude
+        in: query
+        description: Longitude from where user is caling this API
+        required: true
+        schema:
+          type: number
       responses:
         200:
           description: Reading events on a channel Successful
