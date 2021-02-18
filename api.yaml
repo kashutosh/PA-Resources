@@ -17,72 +17,84 @@ tags:
   description: Everything about read only user
   externalDocs:
     description: Find out more
-    url: http://swagger.io
+    url: https://localhost:9090.io
 - name: event
   description: Everything about event
 - name: user
   description: Operations about user
+- name: location
+  description: Everything about locations
+- name: channel
+  description: Everything about channel
+- name: dashboard
+  description: Dashboard Management
+
   
 paths:
-  /pet:
+  /location:
     put:
       tags:
-      - pet
-      summary: Update an existing pet
+      - location
+      summary: Update an existing location
       operationId: updateLocation
       requestBody:
-        description: Location object that needs to be added to the store
+        description: Location Object in JSON format
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Location'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Location'
         required: true
       responses:
+        200:
+          description: Location successfully updated
+          content: {}
         400:
-          description: Invalid ID supplied
+          description: The server could not interpret the location description provided.
           content: {}
         404:
-          description: Location not found
+          description: The server could not find the location provided
           content: {}
         405:
-          description: Validation exception
+          description: Validation exception on the location provided
           content: {}
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
       x-codegen-request-body-name: body
     post:
       tags:
-      - pet
-      summary: Add a new pet to the store
+      - location
+      summary: Add a new location
       operationId: addLocation
       requestBody:
-        description: Location object that needs to be added to the store
+        description: Location object that needs to be added
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Location'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Location'
         required: true
       responses:
-        405:
-          description: Invalid input
+        200:
+          description: Location successfully created
           content: {}
+        405:
+          description: Validation exception on the location provided
+          content: {}
+        400:
+          description: The server could not interpret the data provided.
+          content: {}
+        404:
+          description: The server could not find the data requested
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
       x-codegen-request-body-name: body
-  /pet/findByStatus:
+  /location/findByStatus:
     get:
       tags:
-      - pet
+      - location
       summary: Finds Locations by status
       description: Multiple status values can be provided with comma separated strings
       operationId: findLocationsByStatus
@@ -119,16 +131,23 @@ paths:
         400:
           description: Invalid status value
           content: {}
+        404:
+          description: The server could not find the data requested
+          content: {}
+        405:
+          description: Validation exception on the data provided
+          content: {}
+
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
-  /pet/findByReaders:
+  /location/findByReaders:
     get:
       tags:
-      - pet
+      - location
       summary: Finds Locations by tags
-      description: Muliple tags can be provided with comma separated strings. Use         tag1,
+      description: Muliple tags can be provided with comma separated strings. Use tag1,
         tag2, tag3 for testing.
       operationId: findLocationsByReaders
       parameters:
@@ -159,22 +178,28 @@ paths:
         400:
           description: Invalid tag value
           content: {}
+        404:
+          description: The server could not find the data requested
+          content: {}
+        405:
+          description: Validation exception on the data provided
+          content: {}
       deprecated: true
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
-  /pet/{petId}:
+  /location/{id}:
     get:
       tags:
-      - pet
-      summary: Find pet by ID
-      description: Returns a single pet
+      - location
+      summary: Find location by ID
+      description: Returns a single location
       operationId: getLocationById
       parameters:
-      - name: petId
+      - name: id
         in: path
-        description: ID of pet to return
+        description: ID of the location
         required: true
         schema:
           type: integer
@@ -195,17 +220,20 @@ paths:
         404:
           description: Location not found
           content: {}
+        405:
+          description: Validation exception on the data provided
+          content: {}
       security:
       - api_key: []
     post:
       tags:
-      - pet
-      summary: Updates a pet in the store with form data
+      - location
+      summary: Updates a location in the store with form data
       operationId: updateLocationWithForm
       parameters:
-      - name: petId
+      - name: id
         in: path
-        description: ID of pet that needs to be updated
+        description: ID of location that needs to be updated
         required: true
         schema:
           type: integer
@@ -217,29 +245,38 @@ paths:
               properties:
                 name:
                   type: string
-                  description: Updated name of the pet
+                  description: Updated name of the location
                 status:
                   type: string
-                  description: Updated status of the pet
+                  description: Updated status of the location
       responses:
+        200:
+          description: Location successfully created
+          content: {}
         405:
           description: Invalid input
           content: {}
+        400:
+          description: The server could not interpret the data provided.
+          content: {}
+        404:
+          description: The server could not find the data requested
+          content: {}
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
     delete:
       tags:
-      - pet
-      summary: Deletes a pet
+      - location
+      summary: Delete a Location
       operationId: deleteLocation
       parameters:
       - name: api_key
         in: header
         schema:
           type: string
-      - name: petId
+      - name: id
         in: path
         description: Location id to delete
         required: true
@@ -254,19 +291,19 @@ paths:
           description: Location not found
           content: {}
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
-  /pet/{petId}/uploadImage:
+  /location/{locationId}/uploadImage:
     post:
       tags:
-      - pet
+      - location
       summary: uploads an image
       operationId: uploadFile
       parameters:
-      - name: petId
+      - name: locationId
         in: path
-        description: ID of pet to update
+        description: ID of location to update
         required: true
         schema:
           type: integer
@@ -291,14 +328,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-      - petstore_auth:
+      - pa_auth:
         - write:pets
         - read:pets
-  /store/inventory:
+  /event/inventory:
     get:
       tags:
-      - store
-      summary: Returns pet inventories by status
+      - event
+      summary: Returns location inventories by status
       description: Returns a map of status codes to quantities
       operationId: getInventory
       responses:
@@ -313,16 +350,16 @@ paths:
                   format: int32
       security:
       - api_key: []
-  /store/order:
+  /event:
     post:
       tags:
-      - store
-      summary: Place an order for a pet
+      - event
+      summary: Place an order for a location
       operationId: placeEvent
       requestBody:
-        description: order placed for purchasing the pet
+        description: order placed for purchasing the location
         content:
-          '*/*':
+          'application/json':
             schema:
               $ref: '#/components/schemas/Event'
         required: true
@@ -340,18 +377,18 @@ paths:
           description: Invalid Event
           content: {}
       x-codegen-request-body-name: body
-  /store/order/{orderId}:
+  /event/{id}:
     get:
       tags:
-      - store
+      - event
       summary: Find purchase order by ID
       description: For valid response try integer IDs with value >= 1 and <= 10.         Other
         values will generated exceptions
       operationId: getEventById
       parameters:
-      - name: orderId
+      - name: id
         in: path
-        description: ID of pet that needs to be fetched
+        description: ID of location that needs to be fetched
         required: true
         schema:
           maximum: 10.0
@@ -376,13 +413,13 @@ paths:
           content: {}
     delete:
       tags:
-      - store
+      - event
       summary: Delete purchase order by ID
       description: For valid response try integer IDs with positive integer value.         Negative
         or non-integer values will generate API errors
       operationId: deleteEvent
       parameters:
-      - name: orderId
+      - name: id
         in: path
         description: ID of the order that needs to be deleted
         required: true
@@ -397,6 +434,27 @@ paths:
         404:
           description: Event not found
           content: {}
+  /reader:
+    post:
+      tags:
+        - reader
+      summary: Create reader user. We don't have too many details about such a user
+      description: We create a reader user with a UUID and always identify him with that
+      requestBody:
+        description: Reader Object
+        content:
+          'application/json':
+            schema: 
+              $ref: '#/components/schemas/Reader'
+        required: true
+      responses:
+        200:
+          description: Location successfully created
+          content: {}
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
   /user:
     post:
       tags:
@@ -407,11 +465,14 @@ paths:
       requestBody:
         description: Created user object
         content:
-          '*/*':
+          'application/json':
             schema:
               $ref: '#/components/schemas/User'
         required: true
       responses:
+        200:
+          description: Location successfully created
+          content: {}
         default:
           description: successful operation
           content: {}
@@ -425,7 +486,7 @@ paths:
       requestBody:
         description: List of user object
         content:
-          '*/*':
+          'application/json':
             schema:
               type: array
               items:
@@ -445,7 +506,7 @@ paths:
       requestBody:
         description: List of user object
         content:
-          '*/*':
+          'application/json':
             schema:
               type: array
               items:
@@ -490,12 +551,10 @@ paths:
                 type: string
                 format: date-time
           content:
-            application/xml:
-              schema:
-                type: string
             application/json:
               schema:
                 type: string
+
         400:
           description: Invalid username/password supplied
           content: {}
@@ -554,7 +613,7 @@ paths:
       requestBody:
         description: Updated user object
         content:
-          '*/*':
+          'application/json':
             schema:
               $ref: '#/components/schemas/User'
         required: true
@@ -580,6 +639,9 @@ paths:
         schema:
           type: string
       responses:
+        200:
+          description: Location successfully deleted
+          content: {}
         400:
           description: Invalid username supplied
           content: {}
@@ -591,18 +653,34 @@ components:
     Event:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-        petId:
-          type: integer
-          format: int64
-        quantity:
+        userid:
+          type: string
+          format: string
+        brief:
+          type: string
+          format: string
+        latitude:
+          type: number
+          format: number
+        longitude:
+          type: number
+          format: number
+        expiry:
           type: integer
           format: int32
-        shipDate:
+          description: expiry time in number of days
+        timestamp:
           type: string
           format: date-time
+        channel:
+          type: string
+          format: string
+        priority:
+          type: string
+          format: string
+        message:
+          type: string
+          format: string
         status:
           type: string
           description: Event Status
@@ -623,6 +701,12 @@ components:
           format: int64
         name:
           type: string
+        latitude:
+          type: number
+          format: number
+        longitude:
+          type: number
+          format: number
       xml:
         name: Channel
     User:
@@ -631,6 +715,12 @@ components:
         id:
           type: integer
           format: int64
+        latitude:
+          type: number
+          format: number
+        longitude:
+          type: number
+          format: number
         username:
           type: string
         firstName:
@@ -672,7 +762,7 @@ components:
           $ref: '#/components/schemas/Channel'
         name:
           type: string
-          example: doggie
+          example: enthusiasts
         photoUrls:
           type: array
           xml:
@@ -689,7 +779,7 @@ components:
             $ref: '#/components/schemas/Reader'
         status:
           type: string
-          description: pet status in the store
+          description: location status in the store
           enum:
           - available
           - pending
@@ -710,7 +800,7 @@ components:
           $ref: '#/components/schemas/Channel'
         name:
           type: string
-          example: doggie
+          example: enthusiasts
         photoUrls:
           type: array
           xml:
@@ -727,7 +817,7 @@ components:
             $ref: '#/components/schemas/Reader'
         status:
           type: string
-          description: pet status in the store
+          description: location status in the store
           enum:
           - available
           - pending
@@ -750,14 +840,14 @@ components:
         redirect:
           type: string
   securitySchemes:
-    petstore_auth:
+    pa_auth:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          authorizationUrl: https://localhost:9090.io/oauth/dialog
           scopes:
             write:pets: modify pets in your account
-            read:pets: read your pets
+            read:pets: read your locations
     api_key:
       type: apiKey
       name: api_key
