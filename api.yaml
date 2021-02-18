@@ -87,6 +87,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchErrorResponse'
+
   /location:
     put:
       tags:
@@ -106,25 +107,25 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
           description: The server could not interpret the location description provided.
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
           description: The server could not find the location provided
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         405:
           description: Validation exception on the location provided
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
       security:
       - pa_auth:
         - write:events
@@ -148,25 +149,25 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         405:
           description: Validation exception on the location provided
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
           description: The server could not interpret the data provided.
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
           description: The server could not find the data requested
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/LocationCreateResponse'
+                $ref: '#/components/schemas/LocationCUDResponse'
       security:
       - pa_auth:
         - write:events
@@ -455,25 +456,25 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelCreateResponse'
+                $ref: '#/components/schemas/ChannelCUDResponse'
         405:
           description: Validation exception on the location provided
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelCreateResponse'
+                $ref: '#/components/schemas/ChannelCUDResponse'
         400:
           description: The server could not interpret the data provided.
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelCreateResponse'
+                $ref: '#/components/schemas/ChannelCUDResponse'
         404:
           description: The server could not find the data requested
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/ChannelCreateResponse'
+                $ref: '#/components/schemas/ChannelCUDResponse'
       security:
       - pa_auth:
         - write:events
@@ -481,31 +482,12 @@ paths:
       x-codegen-request-body-name: body
 
 
-  /event/inventory:
-    get:
-      tags:
-      - event
-      summary: Returns location inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-      - api_key: []
   /event:
     post:
       tags:
       - event
-      summary: Place an order for a location
-      operationId: placeEvent
+      summary: Create a new Event
+      operationId: createEvent
       requestBody:
         description: order placed for purchasing the location
         content:
@@ -560,12 +542,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
 
+    put:
+      tags:
+      - event
+      summary: Update an already created event
+      operationId: updateEvent
+      parameters:
+      - name: id
+        in: path
+        description: The id of the event whose details are to be updated
+        required: true
+        schema:
+          type: string
+          format: string
+ 
+      requestBody:
+        description: Event description with modified parameters. Technically this should be multipart data
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          description: Invalid Event
+          content: {}
+      x-codegen-request-body-name: body
+
+
+
     delete:
       tags:
       - event
-      summary: Delete purchase order by ID
-      description: For valid response try integer IDs with positive integer value.         Negative
-        or non-integer values will generate API errors
+      summary: Delete the event
+      description: Allow a user/moderator to delete an event
       operationId: deleteEvent
       parameters:
       - name: id
@@ -573,22 +589,21 @@ paths:
         description: ID of the order that needs to be deleted
         required: true
         schema:
-          minimum: 1.0
-          type: integer
-          format: int64
+          type: string
+          format: string
       responses:
         400:
           description: Invalid ID supplied
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/EventCreateResponse'
+                $ref: '#/components/schemas/EventCUDResponse'
         404:
           description: Event not found
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/EventCreateResponse'
+                $ref: '#/components/schemas/EventCUDResponse'
   /reader:
     post:
       tags:
@@ -1094,7 +1109,7 @@ components:
           - urgent
 
         
-    EventCreateResponse:
+    EventCUDResponse:
       type: object
       required:
       - code
@@ -1111,7 +1126,7 @@ components:
         redirect:
           type: string
 
-    ChannelCreateResponse:
+    ChannelCUDResponse:
       type: object
       required:
       - code
@@ -1128,7 +1143,7 @@ components:
         redirect:
           type: string
 
-    LocationCreateResponse:
+    LocationCUDResponse:
       type: object
       required:
       - code
@@ -1145,7 +1160,7 @@ components:
         redirect:
           type: string
 
-    UserCreateResponse:
+    UserCUDResponse:
       type: object
       required:
       - code
