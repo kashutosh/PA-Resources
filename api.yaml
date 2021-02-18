@@ -399,6 +399,88 @@ paths:
       - pa_auth:
         - write:events
         - read:events
+
+  /channel/{id}:
+    get:
+      tags:
+      - channel
+      summary: Get events on a channel. The primary Use Case
+      operationId: getEventsOnAChannel
+      parameters:
+      - name: id
+        in: path
+        description: The channel name
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Reading events on a channel Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventPreview'
+
+        400:
+          description: The server could not interpret the search description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
+
+        405:
+          description: Validation exception on the search parameters provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
+  /channel:
+    post:
+      tags:
+      - channel
+      summary: Create a new channel 
+      operationId: createNewChannel
+      requestBody:
+        description: Channel object describing the channel to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+        required: true
+      responses:
+        200:
+          description: Channelsuccessfully created
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCreateResponse'
+        405:
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCreateResponse'
+        400:
+          description: The server could not interpret the data provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCreateResponse'
+        404:
+          description: The server could not find the data requested
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCreateResponse'
+      security:
+      - pa_auth:
+        - write:events
+        - read:events
+      x-codegen-request-body-name: body
+
+
   /event/inventory:
     get:
       tags:
@@ -840,6 +922,10 @@ components:
         longitude:
           type: number
           format: number
+        polygon:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationPair'
     User:
       type: object
       required:
@@ -930,7 +1016,22 @@ components:
           type: string
           format: string
           example: in
-    
+
+    LocationPair:
+      required:
+      - latitude
+      - longitude
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: number
+          example: 18.23113
+        longitude:
+          type: number
+          format: number
+          example: 73.213134
+   
     WebEntry:
       required:
       - name
