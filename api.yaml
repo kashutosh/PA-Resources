@@ -20,19 +20,38 @@ tags:
   description: Everything about read only user
   externalDocs:
     description: Find out more
-    url: https://panther.dev.io
+    url: https://panther.dev.io/docs/reader
 - name: event
   description: Everything about event
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/event
 - name: user
   description: Operations about user
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/user
 - name: location
   description: Everything about locations
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/location
 - name: channel
   description: Everything about channel
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/channel
 - name: dashboard
   description: Dashboard Management
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/dashboard
 - name: search
   description: Search Engine
+  externalDocs:
+    description: Find out more
+    url: https://panther.dev.io/docs/search
+
 
   
 paths:
