@@ -12,6 +12,9 @@ info:
 
 servers:
 - url: https://localhost:9090.io/v1
+  description: Production server
+- url: https://staging-localhost:9090.io/v1
+  description: Staging server
 tags:
 - name: reader
   description: Everything about read only user
@@ -64,14 +67,26 @@ paths:
       responses:
         200:
           description: Search Successful
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventPreview'
+
         400:
           description: The server could not interpret the search description provided.
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
+
         405:
           description: Validation exception on the search parameters provided
-          content: {}
-
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchErrorResponse'
   /location:
     put:
       tags:
@@ -88,20 +103,32 @@ paths:
       responses:
         200:
           description: Location successfully updated
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         400:
           description: The server could not interpret the location description provided.
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         404:
           description: The server could not find the location provided
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         405:
           description: Validation exception on the location provided
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
       x-codegen-request-body-name: body
     post:
       tags:
@@ -118,19 +145,32 @@ paths:
       responses:
         200:
           description: Location successfully created
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         405:
           description: Validation exception on the location provided
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         400:
           description: The server could not interpret the data provided.
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
         404:
           description: The server could not find the data requested
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCreateResponse'
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
       x-codegen-request-body-name: body
   /location/findByStatus:
     get:
@@ -176,8 +216,8 @@ paths:
 
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
   /location/findByReaders:
     get:
       tags:
@@ -218,8 +258,8 @@ paths:
       deprecated: true
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
   /location/{id}:
     get:
       tags:
@@ -292,8 +332,8 @@ paths:
           content: {}
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
     delete:
       tags:
       - location
@@ -320,8 +360,8 @@ paths:
           content: {}
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
   /location/{locationId}/uploadImage:
     post:
       tags:
@@ -357,8 +397,8 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
       security:
       - pa_auth:
-        - write:pets
-        - read:pets
+        - write:events
+        - read:events
   /event/inventory:
     get:
       tags:
@@ -402,6 +442,7 @@ paths:
           description: Invalid Event
           content: {}
       x-codegen-request-body-name: body
+
   /event/{id}:
     get:
       tags:
@@ -429,10 +470,17 @@ paths:
                 $ref: '#/components/schemas/Event'
         400:
           description: Invalid ID supplied
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCreateResponse'
         404:
           description: Event not found
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCreateResponse'
+
     delete:
       tags:
       - event
@@ -452,10 +500,16 @@ paths:
       responses:
         400:
           description: Invalid ID supplied
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCreateResponse'
         404:
           description: Event not found
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCreateResponse'
   /reader:
     post:
       tags:
@@ -854,7 +908,130 @@ components:
           - sold
       xml:
         name: WebEntry    
+
+    EventPreview:
+      type: object
+      required:
+      - code
+      properties:
+        eventid:
+          type: string
+          format: string
+          description: The eventid is assigned by the server in POST requests. 
+        userid:
+          type: string
+          format: string
+          description: ID of the user who is posting the event. Required during POST request.
+        brief:
+          type: string
+          format: string
+          description: A brief description of the event
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the event is created. ISO8201 format
+        channel:
+          type: string
+          format: string
+          description: The name of the channel on which event is to be posted
+        priority:
+          type: string
+          format: string
+          description: The default priority is normal. Users can bump priority to urgent.
+          default: normal
+          enum:
+          - normal
+          - urgent
+
         
+    EventCreateResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        eventid:
+          type: string
+        message:
+          type: string
+        error:
+          type: string
+        redirect:
+          type: string
+
+    ChannelCreateResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        channelid:
+          type: string
+        message:
+          type: string
+        error:
+          type: string
+        redirect:
+          type: string
+
+    LocationCreateResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        locationid:
+          type: string
+        message:
+          type: string
+        error:
+          type: string
+        redirect:
+          type: string
+
+    UserCreateResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        userid:
+          type: string
+        message:
+          type: string
+        error:
+          type: string
+        redirect:
+          type: string
+
+    SearchErrorResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        userid:
+          type: string
+        message:
+          type: string
+        error:
+          type: string
+        redirect:
+          type: string
+
+
+
+
     ApiResponse:
       type: object
       required:
@@ -872,6 +1049,8 @@ components:
         redirect:
           type: string
 
+
+
     SearchObject:
       type: object
       properties:
@@ -886,8 +1065,8 @@ components:
         implicit:
           authorizationUrl: https://localhost:9090.io/oauth/dialog
           scopes:
-            write:pets: modify pets in your account
-            read:pets: read your locations
+            write:events: modify events in your account
+            read:events: read your events
     api_key:
       type: apiKey
       name: api_key
