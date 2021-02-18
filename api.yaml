@@ -173,94 +173,6 @@ paths:
         - write:events
         - read:events
       x-codegen-request-body-name: body
-  /location/findByStatus:
-    get:
-      tags:
-      - location
-      summary: Finds Locations by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findLocationsByStatus
-      parameters:
-      - name: status
-        in: query
-        description: Status values that need to be considered for filter
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: array
-          items:
-            type: string
-            default: available
-            enum:
-            - available
-            - pending
-            - sold
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Location'
-        400:
-          description: Invalid status value
-          content: {}
-        404:
-          description: The server could not find the data requested
-          content: {}
-        405:
-          description: Validation exception on the data provided
-          content: {}
-
-      security:
-      - pa_auth:
-        - write:events
-        - read:events
-  /location/findByReaders:
-    get:
-      tags:
-      - location
-      summary: Finds Locations by tags
-      description: Muliple tags can be provided with comma separated strings. Use tag1,
-        tag2, tag3 for testing.
-      operationId: findLocationsByReaders
-      parameters:
-      - name: tags
-        in: query
-        description: Readers to filter by
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: array
-          items:
-            type: string
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Location'
-        400:
-          description: Invalid tag value
-          content: {}
-        404:
-          description: The server could not find the data requested
-          content: {}
-        405:
-          description: Validation exception on the data provided
-          content: {}
-      deprecated: true
-      security:
-      - pa_auth:
-        - write:events
-        - read:events
   /location/{id}:
     get:
       tags:
@@ -647,7 +559,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Reader'
         400:
-          description: Invalid username supplied
+          description: Invalid id supplied
           content: 
             application/json:
               schema:
@@ -681,46 +593,6 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /user/createWithArray:
-    post:
-      tags:
-      - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithArrayInput
-      requestBody:
-        description: List of user object
-        content:
-          'application/json':
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        default:
-          description: successful operation
-          content: {}
-      x-codegen-request-body-name: body
-  /user/createWithList:
-    post:
-      tags:
-      - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithListInput
-      requestBody:
-        description: List of user object
-        content:
-          'application/json':
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        default:
-          description: successful operation
-          content: {}
-      x-codegen-request-body-name: body
   /user/login:
     get:
       tags:
@@ -728,7 +600,7 @@ paths:
       summary: Logs user into the system
       operationId: loginUser
       parameters:
-      - name: username
+      - name: id
         in: query
         description: The user name for login
         required: true
@@ -772,14 +644,14 @@ paths:
         default:
           description: successful operation
           content: {}
-  /user/{username}:
+  /user/{id}:
     get:
       tags:
       - user
       summary: Get user by user name
       operationId: getUserByName
       parameters:
-      - name: username
+      - name: id
         in: path
         description: 'The name that needs to be fetched.  '
         required: true
@@ -811,7 +683,7 @@ paths:
       description: This can only be done by the logged in user.
       operationId: updateUser
       parameters:
-      - name: username
+      - name: id
         in: path
         description: name that need to be updated
         required: true
@@ -825,12 +697,32 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       responses:
+        200:
+          description: User successfully updated
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
-          description: Invalid user supplied
-          content: {}
+          description: The server could not interpret the description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
-          description: User not found
-          content: {}
+          description: The server could not find the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
+        405:
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
+
+
       x-codegen-request-body-name: body
     delete:
       tags:
@@ -839,7 +731,7 @@ paths:
       description: This can only be done by the logged in user.
       operationId: deleteUser
       parameters:
-      - name: username
+      - name: id
         in: path
         description: The name that needs to be deleted
         required: true
@@ -850,7 +742,7 @@ paths:
           description: Location successfully deleted
           content: {}
         400:
-          description: Invalid username supplied
+          description: Invalid id supplied
           content: {}
         404:
           description: User not found
