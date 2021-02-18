@@ -531,6 +531,40 @@ paths:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
+
+  /reader/{id}:
+    get:
+      tags:
+      - reader
+      summary: Get user by user name
+      operationId: getReaderUserById
+      parameters:
+      - name: id
+        in: path
+        description: 'The id that needs to be fetched.  '
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successfully found the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reader'
+        400:
+          description: Invalid username supplied
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        404:
+          description: User not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
   /user:
     post:
       tags:
@@ -653,23 +687,29 @@ paths:
       parameters:
       - name: username
         in: path
-        description: 'The name that needs to be fetched. Use user1 for testing. '
+        description: 'The name that needs to be fetched.  '
         required: true
         schema:
           type: string
       responses:
         200:
-          description: successful operation
+          description: Successfully found the user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         400:
           description: Invalid username supplied
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         404:
           description: User not found
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
     put:
       tags:
       - user
@@ -847,12 +887,24 @@ components:
           format: string
     Reader:
       type: object
+      required:
+      - id
       properties:
         id:
-          type: integer
-          format: int64
-        name:
           type: string
+          format: string
+        latitude:
+          type: number
+          format: number
+        longitude:
+          type: number
+          format: number
+        latitude2:
+          type: number
+          format: number
+        longitude2:
+          type: number
+          format: number
     Location:
       required:
       - id
