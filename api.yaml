@@ -351,7 +351,6 @@ paths:
         required: false
         schema:
           type: integer
-        default: 7
       - name: latitude
         in: query
         description: Latitude from where user is caling this API
