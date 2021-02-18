@@ -671,19 +671,29 @@ components:
   schemas:
     Event:
       type: object
+      required:
+      - userid
       properties:
+        eventid:
+          type: string
+          format: string
+          description: The eventid is assigned by the server in POST requests. 
         userid:
           type: string
           format: string
+          description: ID of the user who is posting the event. Required during POST request.
         brief:
           type: string
           format: string
+          description: A brief description of the event
         latitude:
           type: number
           format: number
+          description: Latitude value from where the user is accesing the server
         longitude:
           type: number
           format: number
+          description: Longitude value from where the user is accesing the server
         expiry:
           type: integer
           format: int32
@@ -691,27 +701,39 @@ components:
         timestamp:
           type: string
           format: date-time
+          description: Timestamp when the event is created. ISO8201 format
         channel:
           type: string
           format: string
+          description: The name of the channel on which event is to be posted
         priority:
           type: string
           format: string
+          description: The default priority is normal. Users can bump priority to urgent.
+          default: normal
+          enum:
+          - normal
+          - urgent
         message:
           type: string
           format: string
+          description: The text description of the event
         status:
           type: string
           description: Event Status
+          default: placed
           enum:
           - placed
           - approved
           - delivered
-        complete:
-          type: boolean
-          default: false
+
+
     Channel:
       type: object
+      required:
+      - id
+      - latitude
+      - longitude
       properties:
         id:
           type: integer
@@ -726,32 +748,49 @@ components:
           format: number
     User:
       type: object
+      required:
+      - id
+      - latitude
+      - longitude
       properties:
         id:
           type: integer
           format: int64
+        name:
+          type: string
+          format: string
         latitude:
           type: number
           format: number
         longitude:
           type: number
           format: number
-        username:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
         password:
           type: string
-        phone:
+        address:
           type: string
-        userStatus:
-          type: integer
+          format: string
+        about:
+          type: string
+          format: string
+        latitude2:
+          type: number
+          format: number
+        longitude2:
+          type: number
+          format: number
+        status:
+          type: string
           description: User Status
-          format: int32
+          enum:
+          - machine
+          - manual
+        url:
+          type: string
+          format: string
+        image:
+          type: string
+          format: string
     Reader:
       type: object
       properties:
@@ -818,6 +857,8 @@ components:
         
     ApiResponse:
       type: object
+      required:
+      - code
       properties:
         code:
           type: integer
