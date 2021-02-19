@@ -631,7 +631,7 @@ paths:
       summary: Create a new Event
       operationId: createEvent
       requestBody:
-        description: order placed for purchasing the location
+        description: Create a new event. The event could be free or paid.
         content:
           'application/json':
             schema:
@@ -639,25 +639,28 @@ paths:
         required: true
       responses:
         200:
-          description: successful operation
+          description: Successfully created the event
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
         400:
-          description: The server could not interpret the event description provided.
+          description: The server could not interpret the event description provided. Something is broken. 
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/EventCUDResponse'
         404:
-          description: The server could not find the event provided
+          description: The server could not find the event provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/EventCUDResponse'
         405:
-          description: Validation exception on the event description provided
+          description: Validation exception on the event description provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -682,19 +685,21 @@ paths:
           format: string
       responses:
         200:
-          description: successful operation
+          description: Found the given event successfully 
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
         400:
-          description: Invalid ID supplied
+          description: Invalid eventid supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
         404:
-          description: Event not found
+          description: Specified Event with eventid not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -730,18 +735,21 @@ paths:
                 $ref: '#/components/schemas/Event'
         400:
           description: The server could not interpret the event description provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/EventCUDResponse'
         404:
-          description: The server could not find the event provided
+          description: The server could not find the event provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/EventCUDResponse'
         405:
-          description: Validation exception on the event description provided
+          description: Validation exception on the event description provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -767,13 +775,15 @@ paths:
           format: string
       responses:
         400:
-          description: Invalid ID supplied
+          description: Invalid eventid supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/EventCUDResponse'
         404:
-          description: Event not found
+          description: Event not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -800,13 +810,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ReaderCUDResponse'
         400:
-          description: Invalid username supplied
+          description: Invalid username supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/ReaderCUDResponse'
         404:
-          description: User not found
+          description: User not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -828,19 +840,21 @@ paths:
           type: string
       responses:
         200:
-          description: Successfully found the user
+          description: Successfully found the user.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Reader'
         400:
-          description: Invalid id supplied
+          description: Invalid userid supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
         404:
-          description: User not found
+          description: User with given userid not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -868,13 +882,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserCUDResponse'
         400:
-          description: Invalid username supplied
+          description: Invalid userid supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/UserCUDResponse'
         404:
-          description: User not found
+          description: User with given userid not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -920,7 +936,8 @@ paths:
                 type: string
 
         400:
-          description: User not found
+          description: User with given userid/password not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -955,19 +972,21 @@ paths:
           type: string
       responses:
         200:
-          description: Successfully found the user
+          description: Successfully logging out the user.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         400:
-          description: Invalid username supplied
+          description: Invalid userid supplied.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
         404:
-          description: User not found
+          description: User with given userid not found.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -981,7 +1000,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: name that need to be updated
+        description: userid of the user that need to be updated
         required: true
         schema:
           type: string
@@ -1000,19 +1019,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
         400:
-          description: The server could not interpret the description provided.
+          description: The server could not interpret the description of the user provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
         404:
-          description: The server could not find the location provided
+          description: The server could not find the user with userid provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
         405:
-          description: Validation exception on the location provided
+          description: Validation exception on the user description provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
@@ -1035,30 +1057,25 @@ paths:
           type: string
       responses:
         200:
-          description: User successfully updated
+          description: User successfully deleted.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
         400:
-          description: The server could not interpret the description provided.
+          description: The server could not interpret the description of the user provided.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
         404:
-          description: The server could not find the location provided
+          description: The server could not find the user with given userid.
+                       Please see message in the response for details.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationCUDResponse'
-        405:
-          description: Validation exception on the location provided
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LocationCUDResponse'
-
 
 components:
   schemas:
