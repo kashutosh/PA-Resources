@@ -209,22 +209,34 @@ paths:
           format: int64
       responses:
         200:
-          description: successful operation
-          content:
+          description: Location successfully found
+          content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/Location'
-        400:
-          description: Invalid ID supplied
-          content: {}
-        404:
-          description: Location not found
-          content: {}
         405:
-          description: Validation exception on the data provided
-          content: {}
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        400:
+          description: The server could not interpret the data provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        404:
+          description: The server could not find the data requested
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+ 
       security:
-      - api_key: []
+      - pa_auth:
+        - write:events
+        - read:events
     post:
       tags:
       - location
@@ -252,16 +264,28 @@ paths:
       responses:
         200:
           description: Location successfully created
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         405:
-          description: Invalid input
-          content: {}
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
           description: The server could not interpret the data provided.
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
           description: The server could not find the data requested
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
       security:
       - pa_auth:
         - write:events
@@ -284,12 +308,30 @@ paths:
           type: integer
           format: int64
       responses:
+        200:
+          description: Location successfully deleted
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
+        405:
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
-          description: Invalid ID supplied
-          content: {}
+          description: The server could not interpret the data provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
-          description: Location not found
-          content: {}
+          description: The server could not find the data requested
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
       security:
       - pa_auth:
         - write:events
@@ -603,8 +645,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
         400:
-          description: Invalid Event
-          content: {}
+          description: The server could not interpret the event description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+        404:
+          description: The server could not find the event provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+        405:
+          description: Validation exception on the event description provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+ 
       x-codegen-request-body-name: body
 
   /event/{id}:
@@ -671,8 +729,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
         400:
-          description: Invalid Event
-          content: {}
+          description: The server could not interpret the event description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+        404:
+          description: The server could not find the event provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+        405:
+          description: Validation exception on the event description provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventCUDResponse'
+ 
       x-codegen-request-body-name: body
 
 
@@ -710,6 +784,7 @@ paths:
         - reader
       summary: Create reader user. We don't have too many details about such a user
       description: We create a reader user with a UUID and always identify him with that
+      operationId: createReaderUser
       requestBody:
         description: Reader Object
         content:
@@ -719,11 +794,23 @@ paths:
         required: true
       responses:
         200:
-          description: Location successfully created
-          content: {}
-        default:
-          description: successful operation
-          content: {}
+          description: Successfully found the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReaderCUDResponse'
+        400:
+          description: Invalid username supplied
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReaderCUDResponse'
+        404:
+          description: User not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReaderCUDResponse'
       x-codegen-request-body-name: body
 
   /reader/{id}:
@@ -775,11 +862,24 @@ paths:
         required: true
       responses:
         200:
-          description: Location successfully created
-          content: {}
-        default:
-          description: successful operation
-          content: {}
+          description: Successfully found the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCUDResponse'
+        400:
+          description: Invalid username supplied
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCUDResponse'
+        404:
+          description: User not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCUDResponse'
+ 
       x-codegen-request-body-name: body
   /user/login:
     get:
@@ -820,8 +920,12 @@ paths:
                 type: string
 
         400:
-          description: Invalid username/password supplied
-          content: {}
+          description: User not found
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+ 
   /user/logout:
     get:
       tags:
@@ -831,7 +935,11 @@ paths:
       responses:
         default:
           description: successful operation
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+ 
   /user/{id}:
     get:
       tags:
@@ -927,14 +1035,31 @@ paths:
           type: string
       responses:
         200:
-          description: Location successfully deleted
-          content: {}
+          description: User successfully updated
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         400:
-          description: Invalid id supplied
-          content: {}
+          description: The server could not interpret the description provided.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
         404:
-          description: User not found
-          content: {}
+          description: The server could not find the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
+        405:
+          description: Validation exception on the location provided
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationCUDResponse'
+
+
 components:
   schemas:
     Event:
@@ -1199,12 +1324,16 @@ components:
           format: int32
         eventid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
 
     ChannelCUDResponse:
       type: object
@@ -1216,12 +1345,16 @@ components:
           format: int32
         channelid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
 
     LocationCUDResponse:
       type: object
@@ -1233,12 +1366,16 @@ components:
           format: int32
         locationid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
 
     UserCUDResponse:
       type: object
@@ -1250,12 +1387,39 @@ components:
           format: int32
         userid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
+
+    ReaderCUDResponse:
+      type: object
+      required:
+      - code
+      properties:
+        code:
+          type: integer
+          format: int32
+        userid:
+          type: string
+          format: string
+        message:
+          type: string
+          format: string
+        error:
+          type: string
+          format: string
+        redirect:
+          type: string
+          format: string
+
+
 
     SearchErrorResponse:
       type: object
@@ -1267,12 +1431,16 @@ components:
           format: int32
         userid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
 
 
 
@@ -1287,12 +1455,16 @@ components:
           format: int32
         eventid:
           type: string
+          format: string
         message:
           type: string
+          format: string
         error:
           type: string
+          format: string
         redirect:
           type: string
+          format: string
 
 
 
